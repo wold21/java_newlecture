@@ -94,6 +94,14 @@ public class Calc2 extends HttpServlet{
 			Cookie valueCookie = new Cookie("value", String.valueOf(v));
 			Cookie opCookie = new Cookie("op", op);
 			
+			// 1-1
+			// 쿠키 페이지경로 설정
+			// / -> 모든 페이지
+			// /notice/ -> notice가 포함된 하위 페이지
+			valueCookie.setPath("/calc2");
+			opCookie.setPath("/calc2");
+			
+			
 			// 2.
 			// 클라이언트에게 전달이 됨.
 			// 응답헤더에 심어지게 된다.
