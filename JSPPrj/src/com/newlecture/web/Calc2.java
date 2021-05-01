@@ -101,6 +101,12 @@ public class Calc2 extends HttpServlet{
 			valueCookie.setPath("/calc2");
 			opCookie.setPath("/calc2");
 			
+			// 2-2
+			// 쿠키가 사용자에게 남아있을 시간
+			// setMaxAge
+			valueCookie.setMaxAge(60*60);
+			opCookie.setMaxAge(60*60);
+			
 			
 			// 2.
 			// 클라이언트에게 전달이 됨.
