@@ -5,9 +5,11 @@ import java.io.IOException;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 @WebServlet("/calc2")
 public class Calc2 extends HttpServlet{
@@ -18,6 +20,14 @@ public class Calc2 extends HttpServlet{
 		// application 저장소
 		// ServletContext
 		ServletContext application = req.getServletContext();
+		
+		// session 
+		HttpSession session = req.getSession();
+		
+		// 3.
+		// Cookie
+		Cookie[] cookies = req.getCookies();
+		
 		// 응답 인코딩 설정
 		res.setCharacterEncoding("UTF-8");
 		// 문서 설정
@@ -33,11 +43,39 @@ public class Calc2 extends HttpServlet{
 		
 		// 계산
 		if(op.equals("=")) {
-			int x = (Integer)application.getAttribute("value");
+			// application 설정
+//			int x = (Integer)application.getAttribute("value");
+			
+			// session으로 설정
+//			int x = (Integer)session.getAttribute("value");
+//			int y = v;
+			
+			// application 설정
+//			String operator = (String)application.getAttribute("op");;
+			
+			// session으로 설정
+//			String operator = (String)session.getAttribute("op");;
+			
+			// 4.
+			// Cookie에서 값 꺼내기
+			int x = 0;
 			int y = v;
-			String operator = (String)application.getAttribute("op");;
+			String operator = "";
+			for(Cookie c : cookies) {
+				if (c.getName().equals("value")) {
+					x = Integer.parseInt(c.getValue());
+					break;
+				}
+			}
+			for(Cookie c : cookies) {
+				if (c.getName().equals("op")) {
+					operator = c.getValue();
+					break;
+				}
+			}
 			
 			int result = 0;
+			
 			if(operator.equals("+")) {
 				result = x + y;
 			}else {
@@ -45,8 +83,22 @@ public class Calc2 extends HttpServlet{
 			}
 			res.getWriter().printf("result is %d\n", result);
 		}else { // 값을 저장
-			application.setAttribute("value", v);
-			application.setAttribute("op", op);
+//			application.setAttribute("value", v);
+//			application.setAttribute("op", op);
+//			session.setAttribute("value", v);
+//			session.setAttribute("op", op);
+			
+			// 1.
+			// cookie
+			// 반드시 문자형이어야함.
+			Cookie valueCookie = new Cookie("value", String.valueOf(v));
+			Cookie opCookie = new Cookie("op", op);
+			
+			// 2.
+			// 클라이언트에게 전달이 됨.
+			// 응답헤더에 심어지게 된다.
+			res.addCookie(valueCookie);
+			res.addCookie(opCookie);
 		}
 		
 	}
