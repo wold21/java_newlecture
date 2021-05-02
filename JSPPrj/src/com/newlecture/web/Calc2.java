@@ -113,6 +113,10 @@ public class Calc2 extends HttpServlet{
 			// 응답헤더에 심어지게 된다.
 			res.addCookie(valueCookie);
 			res.addCookie(opCookie);
+			
+			
+			// redirection
+			res.sendRedirect("calc2.html");
 		}
 		
 	}
